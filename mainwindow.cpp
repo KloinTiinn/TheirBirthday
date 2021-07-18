@@ -301,9 +301,16 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
 void MainWindow::on_actionEdit_triggered()
 {
-    QProcess prc;
-    prc.start("xdg-open", QStringList() << gFileNameEvents);
-    prc.waitForFinished();
+    //QProcess prc;
+    //prc.start("xdg-open", QStringList() << gFileNameEvents);
+    //prc.waitForFinished();
+    EditWindow *pew = new EditWindow;
+    pew->exec();
+    delete pew;
+
+    qlEvents.clear();
+    setLstEvents();
+    refreshWindows();
 }
 
 void MainWindow::on_actionExit_triggered()
