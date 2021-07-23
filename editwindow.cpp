@@ -1,10 +1,12 @@
 #include "editwindow.h"
 #include "ui_editwindow.h"
+
+#include <QCoreApplication>
+#include <QDebug>
+#include <QDir>
 #include <QTextCodec>
-#include <QFileInfo>
 #include <QSettings>
 #include <QTextStream>
-#include <QDebug>
 #include <Qt>
 #include <QInputDialog>
 
@@ -31,12 +33,7 @@ EditWindow::~EditWindow()
 //загружаем файл на редактирование
 void EditWindow::loadFile()
 {
-    QString myFileName = QCoreApplication::arguments().at(0);
-    QFileInfo gfi(myFileName);
-    QString sPath = myFileName.left(myFileName.length() - gfi.fileName().length());
-
-    gFileName = sPath + "events.txt";
-    QFile fl(gFileName);
+    QFile fl(qApp->applicationDirPath() + QDir::separator() + "events.txt");
     if (fl.open(QIODevice::ReadOnly))
     {
         QByteArray sByteArray = fl.readAll();
@@ -60,7 +57,6 @@ void EditWindow::setWindowFont()
 void EditWindow::on_buttonBox_clicked(QAbstractButton *button)
 {
     //сохраняем файл events.txt
-    qDebug() << button->text();
     if (button->text() == "OK")
     {
         QFile fl(gFileName);
