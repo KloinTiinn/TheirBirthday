@@ -1,7 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "editwindow.h"
+
 #include <QTextCodec>
+#include <QDir>
 #include <QDate>
 #include <QDebug>
 #include <QFileInfo>
@@ -78,10 +80,7 @@ void MainWindow::setWindowSize()
 void MainWindow::setLst(QString sFileName)
 {
     QRegExp regexp("^[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]");
-
-    QString myFileName = QCoreApplication::arguments().at(0);
-    QFileInfo gfi(myFileName);
-    QString sPath = myFileName.left(myFileName.length() - gfi.fileName().length());
+    QString sPath = qApp->applicationDirPath() + QDir::separator();
     //запоминаем имя файла для событий
     if (sFileName == "events.txt")
         gFileNameEvents = sPath + sFileName;
