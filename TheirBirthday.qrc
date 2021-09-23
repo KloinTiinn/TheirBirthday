@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/new/files">
+        <file>exit.ico</file>
+        <file>TheirBirthday.ico</file>
+        <file>main_en.qm</file>
+        <file>main_ru.qm</file>
+    </qresource>
+</RCC>
