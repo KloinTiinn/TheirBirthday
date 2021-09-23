@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QPlainTextEdit>
 #include <QSettings>
+#include "pathmanager.h"
 
 namespace Ui {
 class MainWindow;
@@ -33,7 +34,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     void refreshWindows();
-    void setLst(QString);
+    void setLst(const QString& path);
     void setLstEvents();
     void setLstDates();
     QString getResultStr(QList<QString>, int pdays);
@@ -47,9 +48,9 @@ private:
     QList<QString> qlEvents;
     QList<QString> qlDates;
     QList<QString> qlToday;
-    QString gFileNameEvents;
     QColor gColor;
     QSettings gSettings;
+    PathManager pathMan;
 };
 
 #endif // MAINWINDOW_H

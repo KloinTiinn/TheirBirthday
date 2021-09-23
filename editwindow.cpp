@@ -3,16 +3,16 @@
 
 #include <QCoreApplication>
 #include <QDebug>
-#include <QDir>
 #include <QTextCodec>
 #include <QSettings>
 #include <QTextStream>
 #include <Qt>
 #include <QInputDialog>
 
-EditWindow::EditWindow(QWidget *parent) :
+EditWindow::EditWindow(QWidget *parent, const QString& fPath) :
     QDialog(parent),
-    ui(new Ui::EditWindow)
+    ui(new Ui::EditWindow),
+    gFileName(fPath)
 {
     ui->setupUi(this);
     keyCtrlPlus = new QShortcut(this); // Инициализируем объект
@@ -33,7 +33,7 @@ EditWindow::~EditWindow()
 //загружаем файл на редактирование
 void EditWindow::loadFile()
 {
-    QFile fl(qApp->applicationDirPath() + QDir::separator() + "events.txt");
+    QFile fl(gFileName);
     if (fl.open(QIODevice::ReadOnly))
     {
         QByteArray sByteArray = fl.readAll();
@@ -46,7 +46,7 @@ void EditWindow::loadFile()
 //Устанавливаем шрифт и его размер
 void EditWindow::setWindowFont()
 {
-    QSettings settings("Datasoft","TheirBurthday");
+    QSettings settings("Datasoft","TheirBirthday");
     QString fntFamily = settings.value("/Font", "Arial").toString();
     int fntSize = settings.value("/FontSize", 8).toInt();
     //устанавливаем шрифт в окне
@@ -56,8 +56,8 @@ void EditWindow::setWindowFont()
 //На нажатие ОК
 void EditWindow::on_buttonBox_clicked(QAbstractButton *button)
 {
-    //сохраняем файл events.txt
-    if (button->text() == "OK")
+    //сохраняем файл
+    if (ui->buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole)
     {
         QFile fl(gFileName);
         if (fl.open(QIODevice::WriteOnly))
