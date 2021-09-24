@@ -8,20 +8,22 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = TheirBurthday
+TARGET = TheirBirthday
 TEMPLATE = app
 TRANSLATIONS = main_ru.ts main_en.ts
 
 
 SOURCES += main.cpp\
         editwindow.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        pathmanager.cpp
 
 HEADERS  += mainwindow.h \
-    editwindow.h
+    editwindow.h \
+    pathmanager.h
 
 FORMS    += mainwindow.ui \
     editwindow.ui
 
 RESOURCES += \
-    TheirBurthday.qrc
+    TheirBirthday.qrc

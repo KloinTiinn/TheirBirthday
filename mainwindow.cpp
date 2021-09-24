@@ -3,7 +3,6 @@
 #include "editwindow.h"
 
 #include <QTextCodec>
-#include <QDir>
 #include <QDate>
 #include <QDebug>
 #include <QFileInfo>
@@ -13,17 +12,22 @@
 #include <QFont>
 #include <QDesktopServices>
 #include <QProcess>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow), gSettings("Datasoft","TheirBurthday")
+    ui(new Ui::MainWindow), gSettings("Datasoft","TheirBirthday"),
+    pathMan()
 {
-
-
     ui->setupUi(this);
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
     //цвет выделения по умолчанию
     gColor = QColor(Qt::green).lighter(125);
+    // Прочтены ли файлы
+    if (!pathMan.ok()) {
+        QMessageBox::critical(0, tr("Ошибка"), pathMan.errString());
+        return;
+    }
     //запоминаем наши даты и события
     setLstEvents();
     setLstDates();
@@ -77,16 +81,11 @@ void MainWindow::setWindowSize()
     this->setGeometry(0, 0, frmWidth, frmHeight);
 }
 //заполняем полуокно по переданному имени файла
-void MainWindow::setLst(QString sFileName)
+void MainWindow::setLst(const QString& path)
 {
     QRegExp regexp("^[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]");
-    QString sPath = qApp->applicationDirPath() + QDir::separator();
-    //запоминаем имя файла для событий
-    if (sFileName == "events.txt")
-        gFileNameEvents = sPath + sFileName;
-
-    QFile fl(sPath + sFileName);
-    if (!QFile::exists(sPath + sFileName))
+    QFile fl(path);
+    if (!QFile::exists(path))
     {
         fl.open(QIODevice::WriteOnly | QIODevice::Append);
         fl.close();
@@ -102,7 +101,7 @@ void MainWindow::setLst(QString sFileName)
 
             if (sStr.contains(regexp))
             {
-                if (sFileName == "events.txt")
+                if (path.contains("events.txt"))
                     qlEvents << sStr;
                 else
                     qlDates << sStr;
@@ -114,12 +113,12 @@ void MainWindow::setLst(QString sFileName)
 //Заполняем События (нижнее окно)
 void MainWindow::setLstEvents()
 {
-    setLst("events.txt");
+    setLst(pathMan.eventsFilePath());
 }
 //Заполняем Даты (верхнее окно)
 void MainWindow::setLstDates()
 {
-    setLst("dates.txt");
+    setLst(pathMan.datesFilePath());
 }
 //формируем строки "Вчера"
 QString MainWindow::getResultYesterdayStr(QList<QString> pql)
@@ -301,9 +300,9 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 void MainWindow::on_actionEdit_triggered()
 {
     //QProcess prc;
-    //prc.start("xdg-open", QStringList() << gFileNameEvents);
+    //prc.start("xdg-open", QStringList() << pathMan.eventsFilePath());
     //prc.waitForFinished();
-    EditWindow *pew = new EditWindow;
+    EditWindow *pew = new EditWindow(0, pathMan.eventsFilePath());
     pew->exec();
     delete pew;
 

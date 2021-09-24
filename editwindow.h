@@ -16,7 +16,7 @@ class EditWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit EditWindow(QWidget *parent = nullptr);
+    explicit EditWindow(QWidget *parent, const QString& fPath);
     ~EditWindow();
 protected:
     void keyPressEvent(QKeyEvent *);

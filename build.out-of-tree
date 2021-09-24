@@ -5,6 +5,6 @@ BLD_DIR=${SRC_DIR}/../build-theirbirthday
 
 mkdir -p ${BLD_DIR}
 cd ${BLD_DIR}
-qmake ${SRC_DIR}/TheirBurthday.pro
+qmake ${SRC_DIR}/TheirBirthday.pro
 # TODO check exit code
 make
