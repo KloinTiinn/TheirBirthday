@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "editwindow.h"
+#include "settingswindow.h"
 
 #include <QTextCodec>
 #include <QDate>
@@ -23,6 +24,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
     //цвет выделения по умолчанию
     gColor = QColor(Qt::green).lighter(125);
+    //Напоминать за 14 дней по умолчанию
+    gDays = gSettings.value("/Days", 14).toInt();
+    //мало ли чего там с сеттингов считалось...
+    if (gDays < 1 || gDays > 364) gDays = 14;
     // Прочтены ли файлы
     if (!pathMan.ok()) {
         QMessageBox::critical(0, tr("Ошибка"), pathMan.errString());
@@ -170,7 +175,27 @@ QString MainWindow::getResultTomorrowStr(QList<QString> pql)
     }
     return sb;
 }
+//разбираем, "день", "дня" или "дней", в зависимости от количества pdays
+QString MainWindow::getDaysStr(int pdays)
+{
+    int remains1 = pdays;
+    if (pdays >= 100)
+        remains1 = pdays % 100;//остаток от деления на 100
 
+    if (remains1 >= 11 && remains1 <=14) return tr("дней");
+
+    int remains2 = remains1;
+
+    if (remains1 >= 10)
+        remains2 = remains1 % 10;//остаток от деления на 10
+
+    switch (remains2)
+    {
+        case 1: return tr("день");
+        case 2: case 3: case 4: return tr("дня");
+        default: return tr("дней");
+    }
+}
 //формируем строки "Через N дней"
 QString MainWindow::getResultStr(QList<QString> pql, int pdays)
 {
@@ -197,7 +222,7 @@ QString MainWindow::getResultStr(QList<QString> pql, int pdays)
                     sb += tr("Через ") + QString::number(pdays) + tr(" дней (") + slDayMonth[1] + "/" + slDayMonth[0] + ") " + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина")+")\n";
                 }
                 else
-                    sb += tr("Через ") + QString::number(pdays) + (pdays>4?tr(" дней ("):tr(" дня (")) + sDate.left(5).replace("/", ".") + ") " + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина")+")\n";
+                    sb += tr("Через ") + QString::number(pdays) + " " + getDaysStr(pdays) + " (" + sDate.left(5).replace("/", ".") + ") " + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина")+")\n";
             }
             else
             {
@@ -206,7 +231,7 @@ QString MainWindow::getResultStr(QList<QString> pql, int pdays)
                     sb += tr("Через ") + QString::number(pdays) + tr(" дней (") + slDayMonth[1] + "/" + slDayMonth[0] + ") " + fs.replace(sDate, "");
                 }
                 else
-                    sb += tr("Через ") + QString::number(pdays) + (pdays>4?tr(" дней ("):tr(" дня (")) + sDate.left(5).replace("/", ".") + ") " + fs.replace(sDate, "");
+                    sb += tr("Через ") + QString::number(pdays) + " " + getDaysStr(pdays) + " (" + sDate.left(5).replace("/", ".") + ") " + fs.replace(sDate, "");
             }
         }
     }
@@ -244,10 +269,10 @@ void MainWindow::refreshWindows()
 
     QString sbEv = "", sbDt = "";
 
-    for(int i = -1; i < 14; i++)
+    for(int i = -1; i < gDays; i++)
         sbDt += getResultStr(qlDates, i);
 
-    for(int i = -1; i < 14; i++)
+    for(int i = -1; i < gDays; i++)
         sbEv += getResultStr(qlEvents, i);
 
     ui->plainTEditEvents->setPlainText(sbEv);
@@ -314,4 +339,28 @@ void MainWindow::on_actionEdit_triggered()
 void MainWindow::on_actionExit_triggered()
 {
 
+}
+//Выбор параметра "Напоминать за Х дней"
+void MainWindow::on_actionSettings_triggered()
+{
+    SettingsWindow *psw = new SettingsWindow(0, gDays);
+    if(psw->exec() == QDialog::Rejected)
+    {
+        delete psw;
+        return;
+    }
+
+    gDays = psw->getDays();
+    if (gDays < 1 || gDays > 364) gDays = 14;
+    //Сохраняем наш параметр в глобальных настройках
+    gSettings.setValue("/Days", gDays);
+    delete psw;
+
+    qlDates.clear();
+    setLstDates();
+
+    qlEvents.clear();
+    setLstEvents();
+
+    refreshWindows();
 }

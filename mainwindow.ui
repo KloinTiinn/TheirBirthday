@@ -20,7 +20,7 @@
    <string>Their Birthday</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="TheirBurthday.qrc">
+   <iconset resource="TheirBirthday.qrc">
     <normaloff>:/new/files/TheirBirthday.ico</normaloff>:/new/files/TheirBirthday.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -63,7 +63,7 @@
      <x>0</x>
      <y>0</y>
      <width>578</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -74,6 +74,7 @@
     <addaction name="separator"/>
     <addaction name="actionFont"/>
     <addaction name="actionColor"/>
+    <addaction name="actionSettings"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -105,17 +106,22 @@
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset resource="TheirBurthday.qrc">
+    <iconset resource="TheirBirthday.qrc">
      <normaloff>:/new/files/exit.ico</normaloff>:/new/files/exit.ico</iconset>
    </property>
    <property name="text">
     <string>Exit</string>
    </property>
   </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Other settings</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="TheirBurthday.qrc"/>
+  <include location="TheirBirthday.qrc"/>
  </resources>
  <connections/>
 </ui>

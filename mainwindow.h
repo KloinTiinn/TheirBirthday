@@ -31,12 +31,15 @@ private slots:
 
     void on_actionEdit_triggered();
 
+    void on_actionSettings_triggered();
+
 private:
     Ui::MainWindow *ui;
     void refreshWindows();
     void setLst(const QString& path);
     void setLstEvents();
     void setLstDates();
+    QString getDaysStr(int pDays);
     QString getResultStr(QList<QString>, int pdays);
     QString getResultTodayStr(QList<QString>);
     QString getResultYesterdayStr(QList<QString>);
@@ -49,6 +52,7 @@ private:
     QList<QString> qlDates;
     QList<QString> qlToday;
     QColor gColor;
+    int gDays;
     QSettings gSettings;
     PathManager pathMan;
 };
