@@ -16,14 +16,17 @@ TRANSLATIONS = main_ru.ts main_en.ts
 SOURCES += main.cpp\
         editwindow.cpp \
         mainwindow.cpp \
-        pathmanager.cpp
+        pathmanager.cpp \
+    settingswindow.cpp
 
 HEADERS  += mainwindow.h \
     editwindow.h \
-    pathmanager.h
+    pathmanager.h \
+    settingswindow.h
 
 FORMS    += mainwindow.ui \
-    editwindow.ui
+    editwindow.ui \
+    settingswindow.ui
 
 RESOURCES += \
     TheirBirthday.qrc
