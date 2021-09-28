@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     a.installTranslator(&translator);
 
     QCoreApplication::setOrganizationName("Datasoft");
-    QCoreApplication::setApplicationName("TheirBurthday");
+    QCoreApplication::setApplicationName("TheirBirthday");
     MainWindow w;
     w.show();
 
