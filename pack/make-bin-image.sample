@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# This is a simple sample of binary image make.
+# For more complex example see `deb` subdir
+# Third argument 
+
+cd ..
+./pack/make-bin-image . ../theirbirthday-dist ""
