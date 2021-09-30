@@ -1,9 +1,9 @@
 #!/bin/bash
 
-SRC_DIR=`pwd`
-BLD_DIR=$1
-PKG_DIR=$2
-QT_MAJV=$3
+SRC_DIR=$1
+BLD_DIR=$2
+PKG_DIR=$3
+QT_MAJV=$4
 
 BIN_PATH=${PKG_DIR}/usr/bin
 # TRANS_PATH=${PKG_DIR}/usr/share/theirbirthday/translations # now in resources
@@ -17,7 +17,7 @@ mkdir -p ${DSK_PATH}
 mkdir -p ${IMG_PATH}
 mkdir -p ${DOC_PATH}
 
-cp ${SRC_DIR}/TheirBirthday ${BIN_PATH}/
+cp ${BLD_DIR}/TheirBirthday ${BIN_PATH}/
 # cp ${SRC_DIR}/translations/*.qm ${TRANS_PATH}/
 # cp /usr/share/qt${QT_MAJV}/translations/qt_??.qm ${TRANS_PATH}/
 # cp /usr/share/qt${QT_MAJV}/translations/qt_??_??.qm ${TRANS_PATH}/
