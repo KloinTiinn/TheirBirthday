@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./make-deb-pkg 0.0.1 buster amd64 5

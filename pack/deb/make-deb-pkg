@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -o nounset
+set -o errexit
+# Example: make-deb-pkg 0.0.1 buster amd64 5
+PROG_VER=$1
+PKG_DIST=$2
+PKG_ARCH=$3
+QT_MAJV=$4
+
+if [ -z "$PROG_VER" ]
+then
+  echo "Version number is missing"
+  exit 1
+fi
+if [ -z "$PKG_ARCH" ]
+then
+  echo "Package architecture is missing"
+  exit 1
+fi
+
+PKG_NAME=theirbirthday_${PROG_VER}-${PKG_DIST}_${PKG_ARCH}
+PKG_DIR=../${PKG_NAME}
+CTL_FIlE=${PKG_DIR}/DEBIAN/control
+
+# Make bin image
+cd ../..
+./pack/make-bin-image . ../build-theirbirthday ${PKG_DIR} ${QT_MAJV}
+# Copy debianization template
+cp -R ./pack/deb/DEBIAN ${PKG_DIR}/
+# Add version number and arch to control file
+echo "Version: ${PROG_VER}" >> ${CTL_FIlE}
+echo "Architecture: ${PKG_ARCH}" >> ${CTL_FIlE}
+# Add installed size to control file
+INST_SIZE=$(du -hks ${PKG_DIR})
+INST_SIZE=(${INST_SIZE//" "/ })
+INST_SIZE=${INST_SIZE[0]}
+echo "Installed-Size: ${INST_SIZE}" >> ${CTL_FIlE}
+# Build!
+fakeroot dpkg-deb --build ${PKG_DIR}/ ../${PKG_NAME}.deb
