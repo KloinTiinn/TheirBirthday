@@ -1,0 +1,32 @@
+#!/bin/bash
+
+SRC_DIR=$1
+BLD_DIR=$2
+PKG_DIR=$3
+QT_MAJV=$4
+
+BIN_PATH=${PKG_DIR}/usr/bin
+# TRANS_PATH=${PKG_DIR}/usr/share/theirbirthday/translations # now in resources
+DSK_PATH=${PKG_DIR}/usr/share/applications
+IMG_PATH=${PKG_DIR}/usr/share/pixmaps
+DOC_PATH=${PKG_DIR}/usr/share/doc/theirbirthday
+SKL_PATH=${PKG_DIR}/etc/skel/.local/share/Datasoft/TheirBirthday
+
+mkdir -p ${BIN_PATH}
+# mkdir -p ${TRANS_PATH}
+mkdir -p ${DSK_PATH}
+mkdir -p ${IMG_PATH}
+mkdir -p ${DOC_PATH}
+mkdir -p ${SKL_PATH}
+
+cp ${BLD_DIR}/TheirBirthday ${BIN_PATH}/
+# cp ${SRC_DIR}/translations/*.qm ${TRANS_PATH}/
+# cp /usr/share/qt${QT_MAJV}/translations/qt_??.qm ${TRANS_PATH}/
+# cp /usr/share/qt${QT_MAJV}/translations/qt_??_??.qm ${TRANS_PATH}/
+cp ${SRC_DIR}/dates.txt ${SKL_PATH}/
+cp ${SRC_DIR}/events.txt ${SKL_PATH}/
+cp ${SRC_DIR}/theirbirthday.desktop ${DSK_PATH}/
+cp ${SRC_DIR}/img/16x16/theirbirthday_16x16.xpm ${IMG_PATH}/
+# cp ${SRC_DIR}/doc/* ${DOC_PATH}/
+cp ${SRC_DIR}/COPYING ${DOC_PATH}/
+cp ${SRC_DIR}/README.md ${DOC_PATH}/

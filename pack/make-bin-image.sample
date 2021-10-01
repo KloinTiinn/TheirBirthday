@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# This is a simple sample of binary image make.
+# For more complex example see `deb` subdir
+# Common form: make-bin-image source-dir build-dir package-dir qt-major-version
+# Fourth argument may be empty (for `/usr/lib/qt`) or digit (e.g. 5 for (for `/usr/lib/qt5`)
+
+cd ..
+./pack/make-bin-image . ../build-theirbirthday ../dist-theirbirthday ""

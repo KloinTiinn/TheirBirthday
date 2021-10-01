@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=0.1
+Type=Application
+Name=TheirBirthday
+Name[ru]=TheirBirthday
+GenericName=Reminder
+GenericName[ru]=Напоминалка
+Comment=Multi-day birhdays and holidays reminder
+Comment[ru]=Напоминалка о днях рождения и праздниках за несколько дней
+Exec=TheirBirthday
+TryExec=TheirBirthday
+Icon=theirbirthday_16x16
+Terminal=false
+Categories=PIM

@@ -1,0 +1,12 @@
+Source: theirbirthday
+Section: misc
+Priority: optional
+Maintainer: Mikhail Y. Zvyozdochkin <pub@zvyozdochkin.ru>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.5
+Homepage: https://github.com/KloinTiinn/TheirBirthday
+#Vcs-Git: https://github.com/KloinTiinn/TheirBirthday.git
+#Vcs-Browser: https://github.com/KloinTiinn/TheirBirthday
+Package: theirbirthday
+Depends: libc6 (>= 2.28), libqt5gui5 (>= 5.11), libqt5xml5 (>= 5.11)
+Description: multi-day birhdays and holidays reminder
