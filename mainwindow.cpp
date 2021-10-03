@@ -10,6 +10,8 @@
 #include "ui_mainwindow.h"
 #include "editwindow.h"
 #include "settingswindow.h"
+#include "licensewindow.h"
+#include "aboutwindow.h"
 
 #include <QTextCodec>
 #include <QDate>
@@ -30,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
+
     //цвет выделения по умолчанию
     gColor = QColor(Qt::green).lighter(125);
     //Напоминать за 14 дней по умолчанию
@@ -371,4 +374,24 @@ void MainWindow::on_actionSettings_triggered()
     setLstEvents();
 
     refreshWindows();
+}
+
+//пункт меню "О Qt"
+void MainWindow::on_actionAbout_Qt_triggered()
+{
+    QMessageBox::aboutQt(0);
+}
+//Выводим нашу лицензию
+void MainWindow::on_actionLicense_triggered()
+{
+    LicenseWindow *plw = new LicenseWindow;
+
+    plw->exec();
+}
+//Окно "О программе"
+void MainWindow::on_actionAbout_triggered()
+{
+    AboutWindow * paw = new AboutWindow;
+
+    paw->exec();
 }

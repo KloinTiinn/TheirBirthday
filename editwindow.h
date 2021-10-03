@@ -32,15 +32,12 @@ protected:
 private slots:
     void on_buttonBox_clicked(QAbstractButton *button);
 signals:
-    //void doUp();
-    //void doDown();
 
 private:
     Ui::EditWindow *ui;
     void loadFile();
     void setWindowFont();
     QString gFileName;
-    //QMenuBar *menubar;
     QShortcut       *keyCtrlPlus;    // объект горячей клавиши Ctrl + +
     QShortcut       *keyCtrlMinus;  // объект сочетания клавиш Ctrl + -
     QTextCursor findWord();

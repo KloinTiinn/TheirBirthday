@@ -17,16 +17,22 @@ SOURCES += main.cpp\
         editwindow.cpp \
         mainwindow.cpp \
         pathmanager.cpp \
-    settingswindow.cpp
+    settingswindow.cpp \
+    licensewindow.cpp \
+    aboutwindow.cpp
 
 HEADERS  += mainwindow.h \
     editwindow.h \
     pathmanager.h \
-    settingswindow.h
+    settingswindow.h \
+    licensewindow.h \
+    aboutwindow.h
 
 FORMS    += mainwindow.ui \
     editwindow.ui \
-    settingswindow.ui
+    settingswindow.ui \
+    licensewindow.ui \
+    aboutwindow.ui
 
 RESOURCES += \
     TheirBirthday.qrc

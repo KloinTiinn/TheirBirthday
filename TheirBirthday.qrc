@@ -4,5 +4,6 @@
         <file>TheirBirthday.ico</file>
         <file>main_en.qm</file>
         <file>main_ru.qm</file>
+        <file>COPYING</file>
     </qresource>
 </RCC>
