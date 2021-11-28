@@ -13,7 +13,8 @@ AboutWindow::AboutWindow(QWidget *parent) :
     ui(new Ui::AboutWindow)
 {
     ui->setupUi(this);
-    ui->lwContributors->addItem("AppImage image, bugfixes and improvements: Mikhail Zvyozdochkin aka Dark Hobbit");
+    ui->lwContributors->addItem(tr("AppImage image, bugfixes and improvements: Mikhail Zvyozdochkin aka Dark Hobbit"));
+    ui->lwContributors->addItem(tr("bugfixies and improvements: chukcha"));
 }
 
 AboutWindow::~AboutWindow()

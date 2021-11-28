@@ -1,0 +1,10 @@
+Version 0.0.2
+
+Bugfixies: bold fonts, multiple editing window instances 
+Improvements:
+- start main window in center of the screen,
+- panel,
+- add delimiter for view,
+- only one instace of program,
+- add color for 3 days,
+- the new icon of program.

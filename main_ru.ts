@@ -28,6 +28,16 @@
         <source>Contributors</source>
         <translation>Люди, оказавшие неоценимую помощь проекту</translation>
     </message>
+    <message>
+        <location filename="aboutwindow.cpp" line="16"/>
+        <source>AppImage image, bugfixes and improvements: Mikhail Zvyozdochkin aka Dark Hobbit</source>
+        <translation>Образ AppImage, исправление ошибок и предложения по улучшению Mikhail Zvyozdochkin aka Dark Hobbit</translation>
+    </message>
+    <message>
+        <location filename="aboutwindow.cpp" line="17"/>
+        <source>bugfixies and improvements: chukcha</source>
+        <translation>исправления ошибок и предложения по улучшениям: chukcha</translation>
+    </message>
 </context>
 <context>
     <name>EditWindow</name>
@@ -73,105 +83,119 @@
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="83"/>
+        <location filename="mainwindow.ui" line="84"/>
         <source>?</source>
         <translation>?</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="104"/>
-        <source>Edit</source>
-        <translation>Редактировать</translation>
+        <location filename="mainwindow.ui" line="108"/>
+        <source>Edit...</source>
+        <translation>Редактировать...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="109"/>
+        <location filename="mainwindow.ui" line="140"/>
+        <source>Other settings...</source>
+        <translation>Прочие настройки...</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="164"/>
+        <source>Color3...</source>
+        <translation>Цвет 3...</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="vanished">Редактировать</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="117"/>
         <source>Font...</source>
         <translation>Шрифт...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="114"/>
+        <location filename="mainwindow.ui" line="126"/>
         <source>Color...</source>
         <translation>Цвет...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="123"/>
+        <location filename="mainwindow.ui" line="135"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="128"/>
         <source>Other settings</source>
-        <translation>Прочие настройки</translation>
+        <translation type="vanished">Прочие настройки</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="133"/>
+        <location filename="mainwindow.ui" line="145"/>
         <source>License...</source>
         <translation>Лицензия...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="138"/>
+        <location filename="mainwindow.ui" line="150"/>
         <source>About Qt...</source>
         <translation>О Qt...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="143"/>
+        <location filename="mainwindow.ui" line="155"/>
         <source>About...</source>
         <translation>О программе...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="44"/>
+        <location filename="mainwindow.cpp" line="50"/>
         <source>Ошибка</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="148"/>
+        <location filename="mainwindow.cpp" line="171"/>
         <source>Вчера</source>
         <translation>Вчера</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="163"/>
+        <location filename="mainwindow.cpp" line="186"/>
         <source>Сегодня </source>
         <translation>Сегодня </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="163"/>
-        <location filename="mainwindow.cpp" line="182"/>
-        <location filename="mainwindow.cpp" line="233"/>
-        <location filename="mainwindow.cpp" line="236"/>
+        <location filename="mainwindow.cpp" line="186"/>
+        <location filename="mainwindow.cpp" line="207"/>
+        <location filename="mainwindow.cpp" line="269"/>
+        <location filename="mainwindow.cpp" line="273"/>
         <source> годовщина</source>
         <translation> годовщина</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="182"/>
+        <location filename="mainwindow.cpp" line="207"/>
+        <location filename="mainwindow.cpp" line="212"/>
         <source>Завтра </source>
         <translation>Завтра </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="196"/>
-        <location filename="mainwindow.cpp" line="207"/>
+        <location filename="mainwindow.cpp" line="229"/>
+        <location filename="mainwindow.cpp" line="240"/>
         <source>дней</source>
         <translation>дней</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="205"/>
+        <location filename="mainwindow.cpp" line="238"/>
         <source>день</source>
         <translation>день</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="206"/>
+        <location filename="mainwindow.cpp" line="239"/>
         <source>дня</source>
         <translation>дня</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="233"/>
-        <location filename="mainwindow.cpp" line="236"/>
-        <location filename="mainwindow.cpp" line="242"/>
-        <location filename="mainwindow.cpp" line="245"/>
+        <location filename="mainwindow.cpp" line="269"/>
+        <location filename="mainwindow.cpp" line="273"/>
+        <location filename="mainwindow.cpp" line="280"/>
+        <location filename="mainwindow.cpp" line="283"/>
         <source>Через </source>
         <translation>Через </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="233"/>
-        <location filename="mainwindow.cpp" line="242"/>
+        <location filename="mainwindow.cpp" line="269"/>
+        <location filename="mainwindow.cpp" line="280"/>
         <source> дней (</source>
         <translation> дней (</translation>
     </message>
@@ -206,6 +230,16 @@
         <location filename="settingswindow.ui" line="37"/>
         <source>дней                                    </source>
         <translation>дней                                    </translation>
+    </message>
+    <message>
+        <location filename="settingswindow.ui" line="54"/>
+        <source>Разделитель для отображения</source>
+        <translation>Разделитель для отображения</translation>
+    </message>
+    <message>
+        <location filename="settingswindow.ui" line="61"/>
+        <source>/</source>
+        <translation>/</translation>
     </message>
 </context>
 </TS>

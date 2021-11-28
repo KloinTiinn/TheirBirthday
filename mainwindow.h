@@ -47,6 +47,8 @@ private slots:
 
     void on_actionAbout_triggered();
 
+    void on_actionColor3_triggered();
+
 private:
     Ui::MainWindow *ui;
     void refreshWindows();
@@ -58,15 +60,19 @@ private:
     QString getResultTodayStr(QList<QString>);
     QString getResultYesterdayStr(QList<QString>);
     QString getResultTomorrowStr(QList<QString>);
-    void findTodayStrs(QPlainTextEdit *);
+    QString getResult3Str(QList<QString>);
+    void findTodayStrs(QPlainTextEdit *, QList<QString>, QColor);
     void setWindowFont();
     void setWindowSize();
     void setGColor();
     QList<QString> qlEvents;
     QList<QString> qlDates;
     QList<QString> qlToday;
+    QList<QString> ql3;
     QColor gColor;
+    QColor gColor3;
     int gDays;
+    QString gDelimiter;
     QSettings gSettings;
     PathManager pathMan;
 };

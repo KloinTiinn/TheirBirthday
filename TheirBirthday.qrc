@@ -5,5 +5,8 @@
         <file>main_en.qm</file>
         <file>main_ru.qm</file>
         <file>COPYING</file>
+        <file>color.ico</file>
+        <file>color3.ico</file>
+        <file>font.ico</file>
     </qresource>
 </RCC>
