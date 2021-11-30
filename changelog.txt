@@ -1,3 +1,9 @@
+Version 0.0.3
+
+Bugfixies: incorrect today's events coloring
+Improvements:
+- editing "dates.txt" and "events.txt" from context menus/
+
 Version 0.0.2
 
 Bugfixies: bold fonts, multiple editing window instances 

@@ -30,6 +30,7 @@ protected:
     void timerEvent(QTimerEvent *);
     void resizeEvent(QResizeEvent *);
 
+
 private slots:
     void on_actionColor_triggered();
 
@@ -49,6 +50,9 @@ private slots:
 
     void on_actionColor3_triggered();
 
+    void showContextMenuEvents(const QPoint& pos);
+    void showContextMenuDates(const QPoint& pos);
+
 private:
     Ui::MainWindow *ui;
     void refreshWindows();
@@ -61,10 +65,11 @@ private:
     QString getResultYesterdayStr(QList<QString>);
     QString getResultTomorrowStr(QList<QString>);
     QString getResult3Str(QList<QString>);
-    void findTodayStrs(QPlainTextEdit *, QList<QString>, QColor);
+    void findTodayStrs(QPlainTextEdit *);
     void setWindowFont();
     void setWindowSize();
     void setGColor();
+    void callDatesEventsFile(QList<QString>&, QString);
     QList<QString> qlEvents;
     QList<QString> qlDates;
     QList<QString> qlToday;

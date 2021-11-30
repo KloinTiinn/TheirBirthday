@@ -34,6 +34,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
+    ui->plainTEditEvents->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->plainTEditEvents, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuEvents(const QPoint&)));
+
+    ui->plainTEditDates->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->plainTEditDates, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuDates(const QPoint&)));
+
     //цвет выделения по умолчанию
     gColor = QColor(Qt::green).lighter(125);
     //цвет для 3 дней
@@ -60,6 +66,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     refreshWindows();
     startTimer(60000);
+
+
 }
 
 MainWindow::~MainWindow()
@@ -291,7 +299,7 @@ QString MainWindow::getResultStr(QList<QString> pql, int pdays)
     return sb;
 }
 //Подсвечиваем цветом сегодняшнее
-void MainWindow::findTodayStrs(QPlainTextEdit *pte, QList<QString> pLst, QColor pcolor)
+void MainWindow::findTodayStrs(QPlainTextEdit *pte)
 {
     pte->moveCursor(QTextCursor::Start);
 
@@ -299,14 +307,28 @@ void MainWindow::findTodayStrs(QPlainTextEdit *pte, QList<QString> pLst, QColor 
     QList<QTextEdit::ExtraSelection> lSel;
 
     QTextCursor findCur;
-
-    foreach(QString fs, pLst)
+    //подсвечиваем сегодняшние
+    foreach(QString fs, qlToday)
     {
         findCur = pte->document()->find(fs, cur);
         if(findCur != cur)
         {
             QTextEdit::ExtraSelection xtra;
-            xtra.format.setBackground(pcolor);
+            xtra.format.setBackground(gColor);
+            xtra.cursor = findCur;
+            lSel.append(xtra);
+            pte->setExtraSelections(lSel);
+        }
+        cur = findCur;
+    }
+    //подсвечиваем на 3 дня вперёд
+    foreach(QString fs, ql3)
+    {
+        findCur = pte->document()->find(fs, cur);
+        if(findCur != cur)
+        {
+            QTextEdit::ExtraSelection xtra;
+            xtra.format.setBackground(gColor3);
             xtra.cursor = findCur;
             lSel.append(xtra);
             pte->setExtraSelections(lSel);
@@ -332,10 +354,8 @@ void MainWindow::refreshWindows()
     ui->plainTEditEvents->setPlainText(sbEv);
     ui->plainTEditDates->setPlainText(sbDt);
     //подсвечиваем строки "сегодня"
-    findTodayStrs(ui->plainTEditEvents, qlToday, gColor);
-    findTodayStrs(ui->plainTEditEvents, ql3, gColor3);
-    findTodayStrs(ui->plainTEditDates, qlToday, gColor);
-    //findTodayStrs(ui->plainTEditDates, ql3, gColor3);
+    findTodayStrs(ui->plainTEditEvents);
+    findTodayStrs(ui->plainTEditDates);
 }
 //Выбор цвета
 void MainWindow::on_actionColor_triggered()
@@ -377,21 +397,27 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     gSettings.setValue("/Width", event->size().width());
     gSettings.setValue("/Height", event->size().height());
 }
+//суть редактирования для обоих файлов, и Dates, и Events
+void MainWindow::callDatesEventsFile(QList<QString>& pLst, QString pFilePath)
+{
+    ui->menuBar->hide();
+
+    EditWindow *pew = new EditWindow(0, pFilePath);
+    pew->exec();
+    delete pew;
+
+    ui->menuBar->show();
+
+    pLst.clear();
+}
 //Редактировать
 void MainWindow::on_actionEdit_triggered()
 {
     //QProcess prc;
     //prc.start("xdg-open", QStringList() << pathMan.eventsFilePath());
     //prc.waitForFinished();
-    ui->menuBar->hide();
+    callDatesEventsFile(qlEvents, pathMan.eventsFilePath());
 
-    EditWindow *pew = new EditWindow(0, pathMan.eventsFilePath());
-    pew->exec();
-    delete pew;
-
-    ui->menuBar->show();
-
-    qlEvents.clear();
     setLstEvents();
     refreshWindows();
 }
@@ -463,6 +489,39 @@ void MainWindow::on_actionColor3_triggered()
         gSettings.setValue("/Green3", tempColor.green());
         gSettings.setValue("/Blue3", tempColor.blue());
 
+        refreshWindows();
+    }
+}
+
+void MainWindow::showContextMenuEvents(const QPoint& pos)
+{
+    QPoint globalPos = ui->plainTEditEvents->mapToGlobal(pos);
+    QMenu myMenu;
+
+    myMenu.addAction(tr("Редактировать..."));
+
+    QAction* selectedItem = myMenu.exec(globalPos);
+
+    if (selectedItem)
+    {
+        on_actionEdit_triggered();
+    }
+}
+
+void MainWindow::showContextMenuDates(const QPoint& pos)
+{
+    QPoint globalPos = ui->plainTEditDates->mapToGlobal(pos);
+    QMenu myMenu;
+
+    myMenu.addAction(tr("Редактировать..."));
+
+    QAction* selectedItem = myMenu.exec(globalPos);
+
+    if (selectedItem)
+    {
+        callDatesEventsFile(qlDates, pathMan.datesFilePath());
+
+        setLstDates();
         refreshWindows();
     }
 }
