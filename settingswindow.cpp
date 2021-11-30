@@ -9,17 +9,25 @@
 #include "settingswindow.h"
 #include "ui_settingswindow.h"
 
-SettingsWindow::SettingsWindow(QWidget *parent, int pdays) :
+SettingsWindow::SettingsWindow(QWidget *parent, int pdays, QString pdelimiter) :
     QDialog(parent),
     ui(new Ui::SettingsWindow)
 {
     ui->setupUi(this);
+    //задаём значения по умолчанию
     ui->spinBox->setValue(pdays);
+    ui->lineEdit->setText(pdelimiter);
 }
 //получаем выбранное значение "Напоминать за Х дней"
 int SettingsWindow::getDays()
 {
     return ui->spinBox->value();
+}
+
+//получаем выбранное значение "Разделитель для отображения"
+QString SettingsWindow::getDelimiter()
+{
+    return ui->lineEdit->text();
 }
 
 SettingsWindow::~SettingsWindow()

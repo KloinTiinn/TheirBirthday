@@ -74,6 +74,7 @@
     <addaction name="separator"/>
     <addaction name="actionFont"/>
     <addaction name="actionColor"/>
+    <addaction name="actionColor3"/>
     <addaction name="actionSettings"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
@@ -97,19 +98,30 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionFont"/>
+   <addaction name="actionColor"/>
+   <addaction name="actionColor3"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionEdit">
    <property name="text">
-    <string>Edit</string>
+    <string>Edit...</string>
    </property>
   </action>
   <action name="actionFont">
+   <property name="icon">
+    <iconset resource="TheirBirthday.qrc">
+     <normaloff>:/new/files/font.ico</normaloff>:/new/files/font.ico</iconset>
+   </property>
    <property name="text">
     <string>Font...</string>
    </property>
   </action>
   <action name="actionColor">
+   <property name="icon">
+    <iconset resource="TheirBirthday.qrc">
+     <normaloff>:/new/files/color.ico</normaloff>:/new/files/color.ico</iconset>
+   </property>
    <property name="text">
     <string>Color...</string>
    </property>
@@ -125,7 +137,7 @@
   </action>
   <action name="actionSettings">
    <property name="text">
-    <string>Other settings</string>
+    <string>Other settings...</string>
    </property>
   </action>
   <action name="actionLicense">
@@ -141,6 +153,15 @@
   <action name="actionAbout">
    <property name="text">
     <string>About...</string>
+   </property>
+  </action>
+  <action name="actionColor3">
+   <property name="icon">
+    <iconset resource="TheirBirthday.qrc">
+     <normaloff>:/new/files/color3.ico</normaloff>:/new/files/color3.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Color3...</string>
    </property>
   </action>
  </widget>

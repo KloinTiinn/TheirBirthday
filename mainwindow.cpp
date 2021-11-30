@@ -20,6 +20,7 @@
 #include <QColorDialog>
 #include <QFontDialog>
 #include <QSettings>
+#include <QScreen>
 #include <QFont>
 #include <QDesktopServices>
 #include <QProcess>
@@ -33,12 +34,23 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
+    ui->plainTEditEvents->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->plainTEditEvents, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuEvents(const QPoint&)));
+
+    ui->plainTEditDates->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->plainTEditDates, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuDates(const QPoint&)));
+
     //цвет выделения по умолчанию
     gColor = QColor(Qt::green).lighter(125);
+    //цвет для 3 дней
+    gColor3 = QColor(Qt::blue).lighter(175);
     //Напоминать за 14 дней по умолчанию
     gDays = gSettings.value("/Days", 14).toInt();
+    //Разделитель для отображения
+    gDelimiter = gSettings.value("/Delimiter", "/").toString();
     //мало ли чего там с сеттингов считалось...
     if (gDays < 1 || gDays > 364) gDays = 14;
+    if (gDelimiter.length() != 1) gDelimiter = "/";
     // Прочтены ли файлы
     if (!pathMan.ok()) {
         QMessageBox::critical(0, tr("Ошибка"), pathMan.errString());
@@ -54,6 +66,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     refreshWindows();
     startTimer(60000);
+
+
 }
 
 MainWindow::~MainWindow()
@@ -85,6 +99,14 @@ void MainWindow::setGColor()
     //устанавливаем цвет выделения
     if (r != 0 || g != 0 || b != 0)
         gColor = QColor::fromRgb(r, g, b);
+
+    int r3 = gSettings.value("/Red3", 0).toInt();
+    int g3 = gSettings.value("/Green3", 0).toInt();
+    int b3 = gSettings.value("/Blue3", 0).toInt();
+
+    //устанавливаем цвет выделения
+    if (r3 != 0 || g3 != 0 || b3 != 0)
+        gColor3 = QColor::fromRgb(r3, g3, b3);
 }
 
 void MainWindow::setWindowSize()
@@ -93,8 +115,17 @@ void MainWindow::setWindowSize()
     int frmWidth = gSettings.value("/Width", 578).toInt();
     int frmHeight = gSettings.value("/Height", 363).toInt();
 
-    //устанавливаем размеры окна
-    this->setGeometry(0, 0, frmWidth, frmHeight);
+    //определяем размеры экрана
+    QScreen* screen = QApplication::screens().at(0);
+    QSize size = screen->availableSize();
+
+    int iX = size.width()/2 - frmWidth/2;
+    int iY = size.height()/2 - frmHeight/2;
+    //проверяем на допустимость значений
+    if (iX < 0) iX = 0;
+    if (iY < 0) iY = 0;
+    //устанавливаем размеры окна, в центре экрана
+    this->setGeometry(iX , iY, frmWidth, frmHeight);
 }
 //заполняем полуокно по переданному имени файла
 void MainWindow::setLst(const QString& path)
@@ -178,14 +209,24 @@ QString MainWindow::getResultTomorrowStr(QList<QString> pql)
         if (dDate.day() == QDate::currentDate().addDays(1).day() && dDate.month() == QDate::currentDate().addDays(1).month())
         {
             int iy = QDate::currentDate().year() - dDate.year();
+            QString st = "";
             if (iy > 0)
-                sb += tr("Завтра ") + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина") + ")\n";
+            {
+                st = tr("Завтра ") + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина") + ")";
+                sb += st + "\n";
+            }
             else
-                sb += "Завтра " + fs.replace(sDate, "");
+            {
+                st = tr("Завтра ") + fs.replace(sDate, "");
+                sb += st;
+            }
+
+            ql3.append(st);
         }
     }
     return sb;
 }
+
 //разбираем, "день", "дня" или "дней", в зависимости от количества pdays
 QString MainWindow::getDaysStr(int pdays)
 {
@@ -216,6 +257,7 @@ QString MainWindow::getResultStr(QList<QString> pql, int pdays)
         return getResultTodayStr(pql);
     if (pdays == 1)
         return getResultTomorrowStr(pql);
+
     QString sb = "";
     foreach(QString fs, pql)
     {
@@ -223,6 +265,7 @@ QString MainWindow::getResultStr(QList<QString> pql, int pdays)
         QDate dDate = QDate::fromString(sDate, "dd/MM/yyyy");
         if (dDate.day() == QDate::currentDate().addDays(pdays).day() && dDate.month() == QDate::currentDate().addDays(pdays).month())
         {
+            QString st = "";
             QStringList slDayMonth = sDate.left(5).split("/");
             QString sLocale = QLocale::system().name();
             int iy = QDate::currentDate().year() - dDate.year();
@@ -230,20 +273,27 @@ QString MainWindow::getResultStr(QList<QString> pql, int pdays)
             {
                 if (sLocale == "en_US")
                 {
-                    sb += tr("Через ") + QString::number(pdays) + tr(" дней (") + slDayMonth[1] + "/" + slDayMonth[0] + ") " + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина")+")\n";
+                    //sb += tr("Через ") + QString::number(pdays) + tr(" дней (") + slDayMonth[1] + "/" + slDayMonth[0] + ") " + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина")+")\n";
+                    st = tr("Через ") + QString::number(pdays) + tr(" дней (") + slDayMonth[1] + gDelimiter + slDayMonth[0] + ") " + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина")+")";
                 }
                 else
-                    sb += tr("Через ") + QString::number(pdays) + " " + getDaysStr(pdays) + " (" + sDate.left(5).replace("/", ".") + ") " + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина")+")\n";
+                    //sb += tr("Через ") + QString::number(pdays) + " " + getDaysStr(pdays) + " (" + sDate.left(5).replace("/", ".") + ") " + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина")+")\n";
+                    st = tr("Через ") + QString::number(pdays) + " " + getDaysStr(pdays) + " (" + sDate.left(5).replace("/", gDelimiter) + ") " + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина")+")";
+                sb += st + "\n";
             }
             else
             {
                 if (sLocale == "en_US")
                 {
-                    sb += tr("Через ") + QString::number(pdays) + tr(" дней (") + slDayMonth[1] + "/" + slDayMonth[0] + ") " + fs.replace(sDate, "");
+                    st = tr("Через ") + QString::number(pdays) + tr(" дней (") + slDayMonth[1] + gDelimiter + slDayMonth[0] + ") " + fs.replace(sDate, "");
                 }
                 else
-                    sb += tr("Через ") + QString::number(pdays) + " " + getDaysStr(pdays) + " (" + sDate.left(5).replace("/", ".") + ") " + fs.replace(sDate, "");
+                    st = tr("Через ") + QString::number(pdays) + " " + getDaysStr(pdays) + " (" + sDate.left(5).replace("/", gDelimiter) + ") " + fs.replace(sDate, "");
+                sb += st;
             }
+            //заполняем список ql3
+            if (pdays == 2 || pdays == 3)
+                ql3.append(st);
         }
     }
     return sb;
@@ -257,7 +307,7 @@ void MainWindow::findTodayStrs(QPlainTextEdit *pte)
     QList<QTextEdit::ExtraSelection> lSel;
 
     QTextCursor findCur;
-
+    //подсвечиваем сегодняшние
     foreach(QString fs, qlToday)
     {
         findCur = pte->document()->find(fs, cur);
@@ -271,7 +321,22 @@ void MainWindow::findTodayStrs(QPlainTextEdit *pte)
         }
         cur = findCur;
     }
+    //подсвечиваем на 3 дня вперёд
+    foreach(QString fs, ql3)
+    {
+        findCur = pte->document()->find(fs, cur);
+        if(findCur != cur)
+        {
+            QTextEdit::ExtraSelection xtra;
+            xtra.format.setBackground(gColor3);
+            xtra.cursor = findCur;
+            lSel.append(xtra);
+            pte->setExtraSelections(lSel);
+        }
+        cur = findCur;
+    }
 }
+
 //Обновляем главное окно
 void MainWindow::refreshWindows()
 {
@@ -316,7 +381,7 @@ void MainWindow::on_actionFont_triggered()
         gSettings.setValue("/Font", fnt.family());
         gSettings.setValue("/FontSize", fnt.pointSize());
         gSettings.setValue("/FontItalic", fnt.italic());
-        gSettings.setValue("/FontBold", fnt.Bold);
+        gSettings.setValue("/FontBold", fnt.bold()?fnt.Bold:-1);//без таких ухищрений Bold не работает
         ui->plainTEditDates->setFont(fnt);
         ui->plainTEditEvents->setFont(fnt);
     }
@@ -332,17 +397,27 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     gSettings.setValue("/Width", event->size().width());
     gSettings.setValue("/Height", event->size().height());
 }
+//суть редактирования для обоих файлов, и Dates, и Events
+void MainWindow::callDatesEventsFile(QList<QString>& pLst, QString pFilePath)
+{
+    ui->menuBar->hide();
 
+    EditWindow *pew = new EditWindow(0, pFilePath);
+    pew->exec();
+    delete pew;
+
+    ui->menuBar->show();
+
+    pLst.clear();
+}
+//Редактировать
 void MainWindow::on_actionEdit_triggered()
 {
     //QProcess prc;
     //prc.start("xdg-open", QStringList() << pathMan.eventsFilePath());
     //prc.waitForFinished();
-    EditWindow *pew = new EditWindow(0, pathMan.eventsFilePath());
-    pew->exec();
-    delete pew;
+    callDatesEventsFile(qlEvents, pathMan.eventsFilePath());
 
-    qlEvents.clear();
     setLstEvents();
     refreshWindows();
 }
@@ -351,7 +426,7 @@ void MainWindow::on_actionExit_triggered()
 {
 
 }
-//Выбор параметра "Напоминать за Х дней"
+//Выбор параметров "Напоминать за Х дней" и "Разделитель"
 void MainWindow::on_actionSettings_triggered()
 {
     SettingsWindow *psw = new SettingsWindow(0, gDays);
@@ -365,6 +440,10 @@ void MainWindow::on_actionSettings_triggered()
     if (gDays < 1 || gDays > 364) gDays = 14;
     //Сохраняем наш параметр в глобальных настройках
     gSettings.setValue("/Days", gDays);
+
+    gDelimiter = psw->getDelimiter();
+    if (gDelimiter.length() != 1) gDelimiter = "/";
+    gSettings.setValue("/Delimiter", gDelimiter);
     delete psw;
 
     qlDates.clear();
@@ -387,6 +466,8 @@ void MainWindow::on_actionLicense_triggered()
     LicenseWindow *plw = new LicenseWindow;
 
     plw->exec();
+
+    delete plw;
 }
 //Окно "О программе"
 void MainWindow::on_actionAbout_triggered()
@@ -394,4 +475,53 @@ void MainWindow::on_actionAbout_triggered()
     AboutWindow * paw = new AboutWindow;
 
     paw->exec();
+
+    delete paw;
+}
+//Выбираем цвет 3
+void MainWindow::on_actionColor3_triggered()
+{
+    QColor tempColor = QColorDialog::getColor(gColor3);
+    if (tempColor.isValid())
+    {
+        gColor3 = tempColor;
+        gSettings.setValue("/Red3", tempColor.red());
+        gSettings.setValue("/Green3", tempColor.green());
+        gSettings.setValue("/Blue3", tempColor.blue());
+
+        refreshWindows();
+    }
+}
+
+void MainWindow::showContextMenuEvents(const QPoint& pos)
+{
+    QPoint globalPos = ui->plainTEditEvents->mapToGlobal(pos);
+    QMenu myMenu;
+
+    myMenu.addAction(tr("Редактировать..."));
+
+    QAction* selectedItem = myMenu.exec(globalPos);
+
+    if (selectedItem)
+    {
+        on_actionEdit_triggered();
+    }
+}
+
+void MainWindow::showContextMenuDates(const QPoint& pos)
+{
+    QPoint globalPos = ui->plainTEditDates->mapToGlobal(pos);
+    QMenu myMenu;
+
+    myMenu.addAction(tr("Редактировать..."));
+
+    QAction* selectedItem = myMenu.exec(globalPos);
+
+    if (selectedItem)
+    {
+        callDatesEventsFile(qlDates, pathMan.datesFilePath());
+
+        setLstDates();
+        refreshWindows();
+    }
 }
