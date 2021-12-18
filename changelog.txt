@@ -1,8 +1,14 @@
+Version 0.0.4
+
+Improvements:
+- enchanced context menus
+- systray
+
 Version 0.0.3
 
 Bugfixies: incorrect today's events coloring
 Improvements:
-- editing "dates.txt" and "events.txt" from context menus/
+- editing "dates.txt" and "events.txt" from context menus
 
 Version 0.0.2
 
