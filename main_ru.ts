@@ -141,67 +141,89 @@
         <translation>О программе...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="56"/>
+        <location filename="mainwindow.cpp" line="49"/>
+        <source>Развернуть окно</source>
+        <translation>Развернуть окно</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="50"/>
+        <source>Выход</source>
+        <translation>Выход</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="78"/>
         <source>Ошибка</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="179"/>
+        <location filename="mainwindow.cpp" line="199"/>
         <source>Вчера</source>
         <translation>Вчера</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="194"/>
+        <location filename="mainwindow.cpp" line="214"/>
         <source>Сегодня </source>
         <translation>Сегодня </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="194"/>
-        <location filename="mainwindow.cpp" line="215"/>
-        <location filename="mainwindow.cpp" line="277"/>
-        <location filename="mainwindow.cpp" line="281"/>
+        <location filename="mainwindow.cpp" line="214"/>
+        <location filename="mainwindow.cpp" line="235"/>
+        <location filename="mainwindow.cpp" line="297"/>
+        <location filename="mainwindow.cpp" line="301"/>
         <source> годовщина</source>
         <translation> годовщина</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="215"/>
-        <location filename="mainwindow.cpp" line="220"/>
+        <location filename="mainwindow.cpp" line="235"/>
+        <location filename="mainwindow.cpp" line="240"/>
         <source>Завтра </source>
         <translation>Завтра </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="237"/>
-        <location filename="mainwindow.cpp" line="248"/>
+        <location filename="mainwindow.cpp" line="257"/>
+        <location filename="mainwindow.cpp" line="268"/>
         <source>дней</source>
         <translation>дней</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="246"/>
+        <location filename="mainwindow.cpp" line="266"/>
         <source>день</source>
         <translation>день</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="247"/>
+        <location filename="mainwindow.cpp" line="267"/>
         <source>дня</source>
         <translation>дня</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="277"/>
-        <location filename="mainwindow.cpp" line="281"/>
-        <location filename="mainwindow.cpp" line="288"/>
-        <location filename="mainwindow.cpp" line="291"/>
+        <location filename="mainwindow.cpp" line="297"/>
+        <location filename="mainwindow.cpp" line="301"/>
+        <location filename="mainwindow.cpp" line="308"/>
+        <location filename="mainwindow.cpp" line="311"/>
         <source>Через </source>
         <translation>Через </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="277"/>
-        <location filename="mainwindow.cpp" line="288"/>
+        <location filename="mainwindow.cpp" line="297"/>
+        <location filename="mainwindow.cpp" line="308"/>
         <source> дней (</source>
         <translation> дней (</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="501"/>
-        <location filename="mainwindow.cpp" line="516"/>
+        <location filename="mainwindow.cpp" line="533"/>
+        <location filename="mainwindow.cpp" line="553"/>
+        <source>Копировать</source>
+        <translation>Копировать</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="534"/>
+        <location filename="mainwindow.cpp" line="554"/>
+        <source>Выделить всё</source>
+        <translation>Выделить всё</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="535"/>
+        <location filename="mainwindow.cpp" line="555"/>
         <source>Редактировать...</source>
         <translation>Редактировать...</translation>
     </message>
@@ -246,6 +268,11 @@
         <location filename="settingswindow.ui" line="61"/>
         <source>/</source>
         <translation>/</translation>
+    </message>
+    <message>
+        <location filename="settingswindow.ui" line="71"/>
+        <source>Сворачивать в трей</source>
+        <translation>Сворачивать в трей</translation>
     </message>
 </context>
 </TS>

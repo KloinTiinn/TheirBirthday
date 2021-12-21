@@ -12,6 +12,8 @@
 #include <QMainWindow>
 #include <QPlainTextEdit>
 #include <QSettings>
+#include <QCloseEvent>
+#include <QSystemTrayIcon>
 #include "pathmanager.h"
 
 namespace Ui {
@@ -29,6 +31,7 @@ public:
 protected:
     void timerEvent(QTimerEvent *);
     void resizeEvent(QResizeEvent *);
+    void closeEvent(QCloseEvent * event);
 
 
 private slots:
@@ -52,6 +55,13 @@ private slots:
 
     void showContextMenuEvents(const QPoint& pos);
     void showContextMenuDates(const QPoint& pos);
+    void editContextMenuEvents();
+    void editContextMenuDates();
+    void showContextMenuDatesCopy();
+    void showContextMenuDatesSelectAll();
+    void showContextMenuEventsCopy();
+    void showContextMenuEventsSelectAll();
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
 private:
     Ui::MainWindow *ui;
@@ -78,8 +88,10 @@ private:
     QColor gColor3;
     int gDays;
     QString gDelimiter;
+    bool gTray;
     QSettings gSettings;
     PathManager pathMan;
+    QSystemTrayIcon* trayIcon;
 };
 
 #endif // MAINWINDOW_H

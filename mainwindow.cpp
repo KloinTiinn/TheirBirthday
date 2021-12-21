@@ -25,6 +25,7 @@
 #include <QDesktopServices>
 #include <QProcess>
 #include <QMessageBox>
+#include <QIcon>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -33,12 +34,31 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
-
+    //задаём кастомное контекстное меню в полуокнах
     ui->plainTEditEvents->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->plainTEditEvents, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuEvents(const QPoint&)));
 
     ui->plainTEditDates->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->plainTEditDates, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenuDates(const QPoint&)));
+    //обрабатываем иконку трея
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setIcon(QIcon(":/new/files/TheirBirthday.ico"));
+    trayIcon->setToolTip("TheirBirthday");
+    //контекстное меню трея
+    QMenu * menu = new QMenu(this);
+    QAction * viewWindow = new QAction(tr("Развернуть окно"), this);
+    QAction * quitAction = new QAction(tr("Выход"), this);
+
+    connect(viewWindow, SIGNAL(triggered()), this, SLOT(show()));
+    connect(quitAction, SIGNAL(triggered()), this, SLOT(close()));
+
+    menu->addAction(viewWindow);
+    menu->addAction(quitAction);
+
+    trayIcon->setContextMenu(menu);
+    trayIcon->show();
+
+    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
     //цвет выделения по умолчанию
     gColor = QColor(Qt::green).lighter(125);
@@ -48,6 +68,8 @@ MainWindow::MainWindow(QWidget *parent) :
     gDays = gSettings.value("/Days", 14).toInt();
     //Разделитель для отображения
     gDelimiter = gSettings.value("/Delimiter", "/").toString();
+    //Сворачивать в трей
+    gTray = gSettings.value("/Tray", false).toBool();
     //мало ли чего там с сеттингов считалось...
     if (gDays < 1 || gDays > 364) gDays = 14;
     if (gDelimiter.length() != 1) gDelimiter = "/";
@@ -66,8 +88,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     refreshWindows();
     startTimer(60000);
-
-
 }
 
 MainWindow::~MainWindow()
@@ -391,11 +411,20 @@ void MainWindow::timerEvent(QTimerEvent *)
 {
     refreshWindows();
 }
-
+//обрабатываем изменение размера окна
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     gSettings.setValue("/Width", event->size().width());
     gSettings.setValue("/Height", event->size().height());
+}
+//обрабатываем закрытие окна
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if(this->isVisible() && gTray)
+    {
+        event->ignore();
+        this->hide();
+    }
 }
 //суть редактирования для обоих файлов, и Dates, и Events
 void MainWindow::callDatesEventsFile(QList<QString>& pLst, QString pFilePath)
@@ -429,7 +458,7 @@ void MainWindow::on_actionExit_triggered()
 //Выбор параметров "Напоминать за Х дней" и "Разделитель"
 void MainWindow::on_actionSettings_triggered()
 {
-    SettingsWindow *psw = new SettingsWindow(0, gDays);
+    SettingsWindow *psw = new SettingsWindow(0, gDays, gDelimiter, gTray);
     if(psw->exec() == QDialog::Rejected)
     {
         delete psw;
@@ -444,6 +473,9 @@ void MainWindow::on_actionSettings_triggered()
     gDelimiter = psw->getDelimiter();
     if (gDelimiter.length() != 1) gDelimiter = "/";
     gSettings.setValue("/Delimiter", gDelimiter);
+
+    gTray = psw->getTray();
+    gSettings.setValue("/Tray", gTray);
     delete psw;
 
     qlDates.clear();
@@ -492,36 +524,93 @@ void MainWindow::on_actionColor3_triggered()
         refreshWindows();
     }
 }
-
+//Показываем кастомное контекстное меню для событий
 void MainWindow::showContextMenuEvents(const QPoint& pos)
 {
     QPoint globalPos = ui->plainTEditEvents->mapToGlobal(pos);
     QMenu myMenu;
 
-    myMenu.addAction(tr("Редактировать..."));
+    QAction* copyAction = new QAction(tr("Копировать"), this);
+    QAction* selectAllAction = new QAction(tr("Выделить всё"), this);
+    QAction* editAction = new QAction(tr("Редактировать..."), this);
+
+    myMenu.addAction(copyAction);
+    myMenu.addAction(selectAllAction);
+    myMenu.addAction(editAction);
+
+    connect(copyAction, &QAction::triggered, this, &MainWindow::showContextMenuEventsCopy);
+    connect(selectAllAction, &QAction::triggered, this, &MainWindow::showContextMenuEventsSelectAll);
+    connect(editAction, &QAction::triggered, this, &MainWindow::editContextMenuEvents);
 
     QAction* selectedItem = myMenu.exec(globalPos);
-
-    if (selectedItem)
-    {
-        on_actionEdit_triggered();
-    }
 }
-
+//Показываем кастомное контекстное меню для дат
 void MainWindow::showContextMenuDates(const QPoint& pos)
 {
     QPoint globalPos = ui->plainTEditDates->mapToGlobal(pos);
     QMenu myMenu;
 
-    myMenu.addAction(tr("Редактировать..."));
+    QAction* copyAction = new QAction(tr("Копировать"), this);
+    QAction* selectAllAction = new QAction(tr("Выделить всё"), this);
+    QAction* editAction  = new QAction(tr("Редактировать..."), this);
+
+    myMenu.addAction(copyAction);
+    myMenu.addAction(selectAllAction);
+    myMenu.addAction(editAction);
+
+    connect(copyAction, &QAction::triggered, this, &MainWindow::showContextMenuDatesCopy);
+    connect(selectAllAction, &QAction::triggered, this, &MainWindow::showContextMenuDatesSelectAll);
+    connect(editAction, &QAction::triggered, this, &MainWindow::editContextMenuDates);
 
     QAction* selectedItem = myMenu.exec(globalPos);
+}
+//Обрабатываем редактирование событий
+void MainWindow::editContextMenuEvents()
+{
+    on_actionEdit_triggered();
+}
+//Обрабатываем редактирование дат
+void MainWindow::editContextMenuDates()
+{
+    callDatesEventsFile(qlDates, pathMan.datesFilePath());
+    setLstDates();
+    refreshWindows();
+}
+//пользовательские контекстные меню
+void MainWindow::showContextMenuDatesCopy()
+{
+    ui->plainTEditDates->copy();
+}
 
-    if (selectedItem)
+void MainWindow::showContextMenuDatesSelectAll()
+{
+    ui->plainTEditDates->selectAll();
+}
+
+void MainWindow::showContextMenuEventsCopy()
+{
+    ui->plainTEditEvents->copy();
+}
+
+void MainWindow::showContextMenuEventsSelectAll()
+{
+    ui->plainTEditEvents->selectAll();
+}
+//обрабатываем нажатие на иконку в трее
+void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    switch (reason)
     {
-        callDatesEventsFile(qlDates, pathMan.datesFilePath());
-
-        setLstDates();
-        refreshWindows();
+    case QSystemTrayIcon::Trigger:
+        if(gTray)
+        {
+            if(!this->isVisible())
+                this->show();
+            else
+                this->hide();
+        }
+        break;
+    default:
+        break;
     }
 }

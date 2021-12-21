@@ -9,7 +9,7 @@
 #include "settingswindow.h"
 #include "ui_settingswindow.h"
 
-SettingsWindow::SettingsWindow(QWidget *parent, int pdays, QString pdelimiter) :
+SettingsWindow::SettingsWindow(QWidget *parent, int pdays, QString pdelimiter, bool ptray) :
     QDialog(parent),
     ui(new Ui::SettingsWindow)
 {
@@ -17,6 +17,7 @@ SettingsWindow::SettingsWindow(QWidget *parent, int pdays, QString pdelimiter) :
     //задаём значения по умолчанию
     ui->spinBox->setValue(pdays);
     ui->lineEdit->setText(pdelimiter);
+    ui->checkBox->setChecked(ptray);
 }
 //получаем выбранное значение "Напоминать за Х дней"
 int SettingsWindow::getDays()
@@ -29,7 +30,11 @@ QString SettingsWindow::getDelimiter()
 {
     return ui->lineEdit->text();
 }
-
+//получаем "Сворачивать в трей"
+bool SettingsWindow::getTray()
+{
+    return ui->checkBox->isChecked();
+}
 SettingsWindow::~SettingsWindow()
 {
     delete ui;

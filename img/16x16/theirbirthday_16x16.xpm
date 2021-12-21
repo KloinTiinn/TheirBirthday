@@ -1,21 +1,25 @@
 /* XPM */
-static char * theirbirthday_16x16_xpm[] = {
-"16 16 2 1",
-" 	c None",
-".	c #000000",
-"............    ",
-"............    ",
-".   ....   .    ",
-"    ....        ",
-"    ....        ",
-"    .... ...... ",
-"    ....  ..  ..",
-"    ....  ..  ..",
-"    ....  ..... ",
-"    ....  ....  ",
-"    ....  ..  . ",
-"    ....  ..  ..",
-"    ....  ..  ..",
-"    ....  ..  ..",
-"    ....  ..  . ",
-"   ...... ....  "};
+static char *b19ff9f189204655eaa99a9f9607a61bz4Lyp5rE70QJJmKW[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c red",
+". c yellow",
+"X c #800080",
+/* pixels */
+". . . . . . XXXX",
+" . . . . . .XXXX",
+".XXX. . XXX XXXX",
+"XXXX . .XXXXXXXX",
+"XXXX. . XXXXXXXX",
+"XXXX . .X. . . X",
+"XXXX. . XX. XX. ",
+"XXXX . .XX .XX .",
+"XXXX. . XX. . .X",
+"XXXX . .XX . .XX",
+"XXXX. . XX. XX.X",
+"XXXX . .XX .XX .",
+"XXXX. . XX. XX. ",
+"XXXX . .XX .XX .",
+"XXXX. . XX. XX.X",
+"XXX. . . X . .XX"
+};

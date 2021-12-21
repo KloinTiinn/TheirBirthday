@@ -20,9 +20,10 @@ class SettingsWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit SettingsWindow(QWidget *parent = nullptr, int pdays = 14, QString pdelimiter = "/");
+    explicit SettingsWindow(QWidget *parent = nullptr, int pdays = 14, QString pdelimiter = "/", bool ptray = false);
     int getDays();//получаем выбранное значение "Напоминать за Х дней"
     QString getDelimiter();//получаем "Разделитель для отображения"
+    bool getTray();//получаем "Сворачивать в трей"
     ~SettingsWindow();
 
 private:
