@@ -93,9 +93,28 @@
         <translation>Редактировать...</translation>
     </message>
     <message>
+        <location filename="mainwindow.ui" line="126"/>
+        <source>Color of &quot;Today&quot; dates...</source>
+        <translation>Цвет сегодняшнего текста...</translation>
+    </message>
+    <message>
         <location filename="mainwindow.ui" line="129"/>
+        <source>Цвет сегодняшнего текста</source>
+        <translation>Цвет сегодняшнего текста</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="167"/>
+        <source>Color of other dates...</source>
+        <translation>Цвет остального текста...</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="170"/>
+        <source>Цвет прочего текста</source>
+        <translation></translation>
+    </message>
+    <message>
         <source>Color of &quot;Today&quot; dates</source>
-        <translation>Цвет шрифта сегодняшних дат</translation>
+        <translation type="vanished">Цвет шрифта сегодняшних дат</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="143"/>
@@ -103,14 +122,12 @@
         <translation>Прочие настройки...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="167"/>
         <source>Color3...</source>
-        <translation>Цвет 3...</translation>
+        <translation type="vanished">Цвет 3...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="170"/>
         <source>Color of other dates (yesterday, tomorrow...)</source>
-        <translation>Цвет шрифта прочих дат</translation>
+        <translation type="vanished">Цвет шрифта прочих дат</translation>
     </message>
     <message>
         <source>Edit</source>
@@ -122,9 +139,8 @@
         <translation>Шрифт...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="126"/>
         <source>Color...</source>
-        <translation>Цвет...</translation>
+        <translation type="vanished">Цвет...</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="138"/>

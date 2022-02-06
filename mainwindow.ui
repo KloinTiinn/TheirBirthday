@@ -123,10 +123,10 @@
      <normaloff>:/new/files/today.ico</normaloff>:/new/files/today.ico</iconset>
    </property>
    <property name="text">
-    <string>Color...</string>
+    <string>Color of &quot;Today&quot; dates...</string>
    </property>
    <property name="toolTip">
-    <string>Color of &quot;Today&quot; dates</string>
+    <string>Цвет сегодняшнего текста</string>
    </property>
   </action>
   <action name="actionExit">
@@ -164,10 +164,10 @@
      <normaloff>:/new/files/yesterday.ico</normaloff>:/new/files/yesterday.ico</iconset>
    </property>
    <property name="text">
-    <string>Color3...</string>
+    <string>Color of other dates...</string>
    </property>
    <property name="toolTip">
-    <string>Color of other dates (yesterday, tomorrow...)</string>
+    <string>Цвет прочего текста</string>
    </property>
   </action>
  </widget>

@@ -93,9 +93,28 @@
         <translation>Edit...</translation>
     </message>
     <message>
+        <location filename="mainwindow.ui" line="126"/>
+        <source>Color of &quot;Today&quot; dates...</source>
+        <translation>Color of &quot;Today&quot; dates...</translation>
+    </message>
+    <message>
         <location filename="mainwindow.ui" line="129"/>
-        <source>Color of &quot;Today&quot; dates</source>
+        <source>Цвет сегодняшнего текста</source>
         <translation>Color of &quot;Today&quot; dates</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="167"/>
+        <source>Color of other dates...</source>
+        <translation>Color of other dates...</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="170"/>
+        <source>Цвет прочего текста</source>
+        <translation>Color of other dates</translation>
+    </message>
+    <message>
+        <source>Color of &quot;Today&quot; dates</source>
+        <translation type="vanished">Color of &quot;Today&quot; dates</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="143"/>
@@ -103,14 +122,12 @@
         <translation>Other settings...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="167"/>
         <source>Color3...</source>
-        <translation>Color3...</translation>
+        <translation type="vanished">Color3...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="170"/>
         <source>Color of other dates (yesterday, tomorrow...)</source>
-        <translation>Color of other dates (yesterday, tomorrow...)</translation>
+        <translation type="vanished">Color of other dates (yesterday, tomorrow...)</translation>
     </message>
     <message>
         <source>Edit</source>
@@ -122,9 +139,8 @@
         <translation>Font...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="126"/>
         <source>Color...</source>
-        <translation>Color...</translation>
+        <translation type="vanished">Color...</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="138"/>
