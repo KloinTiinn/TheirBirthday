@@ -8,5 +8,7 @@
         <file>color.ico</file>
         <file>color3.ico</file>
         <file>font.ico</file>
+        <file>today.ico</file>
+        <file>yesterday.ico</file>
     </qresource>
 </RCC>

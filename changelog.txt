@@ -1,6 +1,13 @@
 Version 0.0.4
 
 Improvements:
+
+- color highlighting scheme is changed: now, you can set font color only.
+- "DataSoft" replaced by "TheirBirthdaySoft"
+
+Version 0.0.4
+
+Improvements:
 - enchanced context menus
 - systray
 

@@ -29,7 +29,7 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow), gSettings("Datasoft","TheirBirthday"),
+    ui(new Ui::MainWindow), gSettings("TheirBirthdaySoft","TheirBirthday"),
     pathMan()
 {
     ui->setupUi(this);
@@ -60,10 +60,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
-    //цвет выделения по умолчанию
-    gColor = QColor(Qt::green).lighter(125);
-    //цвет для 3 дней
-    gColor3 = QColor(Qt::blue).lighter(175);
+    //цвет выделения "сегодняшнего" текста
+    //gColorTodayText = QColor(Qt::green).lighter(125);
+    gColorTodayText = QColor(Qt::red);
+    //цвет для текста остальных дней
+    //gColorOtherText = QColor(Qt::blue).lighter(175);
+    gColorOtherText = QColor(Qt::black);
     //Напоминать за 14 дней по умолчанию
     gDays = gSettings.value("/Days", 14).toInt();
     //Разделитель для отображения
@@ -118,7 +120,10 @@ void MainWindow::setGColor()
 
     //устанавливаем цвет выделения
     if (r != 0 || g != 0 || b != 0)
-        gColor = QColor::fromRgb(r, g, b);
+    {
+        gColorTodayText = QColor::fromRgb(r, g, b);
+        gsColorTodayText = "#" + (r==0?"00":QString::number( r, 16 )) + (g==0?"00":QString::number( g, 16 ))+ (b==0?"00":QString::number( b, 16 ));
+    }
 
     int r3 = gSettings.value("/Red3", 0).toInt();
     int g3 = gSettings.value("/Green3", 0).toInt();
@@ -126,7 +131,10 @@ void MainWindow::setGColor()
 
     //устанавливаем цвет выделения
     if (r3 != 0 || g3 != 0 || b3 != 0)
-        gColor3 = QColor::fromRgb(r3, g3, b3);
+    {
+        gColorOtherText = QColor::fromRgb(r3, g3, b3);
+        gsColorOtherText = "#" + (r3==0?"00":QString::number( r3, 16 )) + (g3==0?"00":QString::number( g3, 16 ))+ (b3==0?"00":QString::number( b3, 16 ));
+    }
 }
 
 void MainWindow::setWindowSize()
@@ -334,7 +342,7 @@ void MainWindow::findTodayStrs(QPlainTextEdit *pte)
         if(findCur != cur)
         {
             QTextEdit::ExtraSelection xtra;
-            xtra.format.setBackground(gColor);
+            xtra.format.setBackground(gColorTodayText);
             xtra.cursor = findCur;
             lSel.append(xtra);
             pte->setExtraSelections(lSel);
@@ -348,7 +356,7 @@ void MainWindow::findTodayStrs(QPlainTextEdit *pte)
         if(findCur != cur)
         {
             QTextEdit::ExtraSelection xtra;
-            xtra.format.setBackground(gColor3);
+            xtra.format.setBackground(gColorOtherText);
             xtra.cursor = findCur;
             lSel.append(xtra);
             pte->setExtraSelections(lSel);
@@ -365,28 +373,62 @@ void MainWindow::refreshWindows()
 
     QString sbEv = "", sbDt = "";
 
-    for(int i = -1; i < gDays; i++)
-        sbDt += getResultStr(qlDates, i);
+    //for(int i = -1; i < gDays; i++)
+        //sbDt += getResultStr(qlDates, i);
 
     for(int i = -1; i < gDays; i++)
-        sbEv += getResultStr(qlEvents, i);
+    {
+        QString resDates = getResultStr(qlDates, i);
+        if (resDates.isEmpty()) continue;
+        /*
+        QTextCharFormat fmt = ui->plainTEditDates->currentCharFormat();
+        if (i%2 == 0)
+            fmt.setForeground(QBrush(Qt::red));
+        else
+            fmt.setForeground(QBrush(Qt::blue));
+        ui->plainTEditDates->setCurrentCharFormat(fmt);
+        ui->plainTEditDates->appendPlainText(getResultStr(qlDates, i));
 
-    ui->plainTEditEvents->setPlainText(sbEv);
-    ui->plainTEditDates->setPlainText(sbDt);
+        fmt = ui->plainTEditDates->currentCharFormat();
+        fmt.clearForeground();
+        ui->plainTEditDates->setCurrentCharFormat(fmt);
+        */
+
+        if (resDates.left(5) == tr("Сегод"))
+            ui->plainTEditDates->appendHtml("<div><font color=\"" + gsColorTodayText + "\">" + resDates + "</font></div>");
+        else
+            ui->plainTEditDates->appendHtml("<div><font color=\"" + gsColorOtherText + "\">" + resDates + "</font></div>");
+    }
+    for(int i = -1; i < gDays; i++)
+    {
+        QString resEvents = getResultStr(qlEvents, i);
+        if (resEvents.isEmpty()) continue;
+
+        if (resEvents.left(5) == tr("Сегод"))
+            ui->plainTEditEvents->appendHtml("<div><font color=\"" + gsColorTodayText + "\">" + resEvents + "</font></div>");
+        else
+            ui->plainTEditEvents->appendHtml("<div><font color=\"" + gsColorOtherText + "\">" + resEvents + "</font></div>");
+        //sbEv += getResultStr(qlEvents, i);
+    }
+
+    //ui->plainTEditEvents->setPlainText(sbEv);
+    //ui->plainTEditDates->setPlainText(sbDt);
     //подсвечиваем строки "сегодня"
-    findTodayStrs(ui->plainTEditEvents);
-    findTodayStrs(ui->plainTEditDates);
+    //findTodayStrs(ui->plainTEditEvents);
+    //findTodayStrs(ui->plainTEditDates);
 }
 //Выбор цвета
 void MainWindow::on_actionColor_triggered()
 {
-    QColor tempColor = QColorDialog::getColor(gColor);
+    QColor tempColor = QColorDialog::getColor(gColorTodayText);
     if (tempColor.isValid())
     {
-        gColor = tempColor;
+        gColorTodayText = tempColor;
         gSettings.setValue("/Red", tempColor.red());
         gSettings.setValue("/Green", tempColor.green());
         gSettings.setValue("/Blue", tempColor.blue());
+
+        setGColor();
 
         refreshWindows();
     }
@@ -513,14 +555,15 @@ void MainWindow::on_actionAbout_triggered()
 //Выбираем цвет 3
 void MainWindow::on_actionColor3_triggered()
 {
-    QColor tempColor = QColorDialog::getColor(gColor3);
+    QColor tempColor = QColorDialog::getColor(gColorOtherText);
     if (tempColor.isValid())
     {
-        gColor3 = tempColor;
+        gColorOtherText = tempColor;
         gSettings.setValue("/Red3", tempColor.red());
         gSettings.setValue("/Green3", tempColor.green());
         gSettings.setValue("/Blue3", tempColor.blue());
 
+        setGColor();
         refreshWindows();
     }
 }

@@ -25,7 +25,7 @@ PathManager::PathManager()
 #ifdef Q_OS_WIN32
             qApp->applicationDirPath() + QDir::separator() + "templates";
 #else
-            "/etc/skel/.local/share/Datasoft/TheirBirthday";
+            "/etc/skel/.local/share/TheirBirthdaySoft/TheirBirthday";
 #endif
     // Путь к рабочим файлам (for Linux, in /home...)
     QString configPath =

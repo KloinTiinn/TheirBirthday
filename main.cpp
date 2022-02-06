@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    QCoreApplication::setOrganizationName("Datasoft");
+    QCoreApplication::setOrganizationName("TheirBirthdaySoft");
     QCoreApplication::setApplicationName("TheirBirthday");
     MainWindow w;
     w.show();

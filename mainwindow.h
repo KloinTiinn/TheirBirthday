@@ -84,8 +84,10 @@ private:
     QList<QString> qlDates;
     QList<QString> qlToday;
     QList<QString> ql3;
-    QColor gColor;
-    QColor gColor3;
+    QColor gColorTodayText;
+    QString gsColorTodayText;
+    QColor gColorOtherText;
+    QString gsColorOtherText;
     int gDays;
     QString gDelimiter;
     bool gTray;

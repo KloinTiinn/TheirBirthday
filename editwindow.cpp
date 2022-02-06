@@ -54,7 +54,7 @@ void EditWindow::loadFile()
 //Устанавливаем шрифт и его размер
 void EditWindow::setWindowFont()
 {
-    QSettings settings("Datasoft","TheirBirthday");
+    QSettings settings("TheirBirthdaySoft","TheirBirthday");
     QString fntFamily = settings.value("/Font", "Arial").toString();
     int fntSize = settings.value("/FontSize", 8).toInt();
     //устанавливаем шрифт в окне

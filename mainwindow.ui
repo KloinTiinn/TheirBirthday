@@ -120,10 +120,13 @@
   <action name="actionColor">
    <property name="icon">
     <iconset resource="TheirBirthday.qrc">
-     <normaloff>:/new/files/color.ico</normaloff>:/new/files/color.ico</iconset>
+     <normaloff>:/new/files/today.ico</normaloff>:/new/files/today.ico</iconset>
    </property>
    <property name="text">
     <string>Color...</string>
+   </property>
+   <property name="toolTip">
+    <string>Color of &quot;Today&quot; dates</string>
    </property>
   </action>
   <action name="actionExit">
@@ -158,10 +161,13 @@
   <action name="actionColor3">
    <property name="icon">
     <iconset resource="TheirBirthday.qrc">
-     <normaloff>:/new/files/color3.ico</normaloff>:/new/files/color3.ico</iconset>
+     <normaloff>:/new/files/yesterday.ico</normaloff>:/new/files/yesterday.ico</iconset>
    </property>
    <property name="text">
     <string>Color3...</string>
+   </property>
+   <property name="toolTip">
+    <string>Color of other dates (yesterday, tomorrow...)</string>
    </property>
   </action>
  </widget>
