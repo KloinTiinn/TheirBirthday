@@ -1,3 +1,7 @@
+Version 0.0.7
+
+Bugfixies: multiple events on the same date were displayed incorrectly 
+
 Version 0.0.6
 
 Some Bugfixies.

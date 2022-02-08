@@ -204,8 +204,10 @@ QString MainWindow::getResultYesterdayStr(QList<QString> pql)
         QString sDate = fs.left(10);
         QDate dDate = QDate::fromString(sDate, "dd/MM/yyyy");
         if (dDate.day() == QDate::currentDate().addDays(-1).day() && dDate.month() == QDate::currentDate().addDays(-1).month())
-            sb += tr("Вчера") + fs.replace(sDate, "");// + "\n";
+            sb += tr("Вчера") + fs.replace(sDate, "") + "\n";
     }
+    if (sb != "")
+        return sb.left(sb.length() -1);
     return sb;
 }
 //формируем строки "Сегодня"
@@ -224,6 +226,8 @@ QString MainWindow::getResultTodayStr(QList<QString> pql)
             qlToday.append(st);
         }
     }
+    if (sb != "")
+        return sb.left(sb.length() -1);
     return sb;
 }
 //формируем строки "Завтра"
@@ -246,12 +250,15 @@ QString MainWindow::getResultTomorrowStr(QList<QString> pql)
             else
             {
                 st = tr("Завтра ") + fs.replace(sDate, "");
-                sb += st;
+                sb += st + "\n";
             }
 
             ql3.append(st);
         }
     }
+
+    if (sb != "")
+        return sb.left(sb.length() -1);
     return sb;
 }
 
@@ -317,13 +324,15 @@ QString MainWindow::getResultStr(QList<QString> pql, int pdays)
                 }
                 else
                     st = tr("Через ") + QString::number(pdays) + " " + getDaysStr(pdays) + " (" + sDate.left(5).replace("/", gDelimiter) + ") " + fs.replace(sDate, "");
-                sb += st;
+                sb += st + "\n";
             }
             //заполняем список ql3
-            if (pdays == 2 || pdays == 3)
-                ql3.append(st);
+            //if (pdays == 2 || pdays == 3)
+                //ql3.append(st);
         }
     }
+    if (sb != "")
+        return sb.left(sb.length() -1);
     return sb;
 }
 //Подсвечиваем цветом сегодняшнее
@@ -395,9 +404,15 @@ void MainWindow::refreshWindows()
         */
 
         if (resDates.left(5) == tr("Сегод"))
+        {
+            resDates = resDates.replace("\n", "</font></div><div><font color=\"" + gsColorTodayText + "\">");
             ui->plainTEditDates->appendHtml("<div><font color=\"" + gsColorTodayText + "\">" + resDates + "</font></div>");
+        }
         else
+        {
+            resDates = resDates.replace("\n", "</font></div><div><font color=\"" + gsColorOtherText + "\">");
             ui->plainTEditDates->appendHtml("<div><font color=\"" + gsColorOtherText + "\">" + resDates + "</font></div>");
+        }
     }
     for(int i = -1; i < gDays; i++)
     {
@@ -405,9 +420,15 @@ void MainWindow::refreshWindows()
         if (resEvents.isEmpty()) continue;
 
         if (resEvents.left(5) == tr("Сегод"))
+        {
+            resEvents = resEvents.replace("\n", "</font></div><div><font color=\"" + gsColorTodayText + "\">");
             ui->plainTEditEvents->appendHtml("<div><font color=\"" + gsColorTodayText + "\">" + resEvents + "</font></div>");
+        }
         else
+        {
+            resEvents = resEvents.replace("\n", "</font></div><div><font color=\"" + gsColorOtherText + "\">");
             ui->plainTEditEvents->appendHtml("<div><font color=\"" + gsColorOtherText + "\">" + resEvents + "</font></div>");
+        }
         //sbEv += getResultStr(qlEvents, i);
     }
 
