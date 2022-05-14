@@ -10,7 +10,7 @@ BIN_PATH=${PKG_DIR}/usr/bin
 DSK_PATH=${PKG_DIR}/usr/share/applications
 IMG_PATH=${PKG_DIR}/usr/share/pixmaps
 DOC_PATH=${PKG_DIR}/usr/share/doc/theirbirthday
-SKL_PATH=${PKG_DIR}/etc/skel/.local/share/Datasoft/TheirBirthday
+SKL_PATH=${PKG_DIR}/etc/skel/.local/share/TheirBirthdaySoft/TheirBirthday
 
 mkdir -p ${BIN_PATH}
 # mkdir -p ${TRANS_PATH}
