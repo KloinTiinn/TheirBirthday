@@ -80,6 +80,7 @@ private:
     void setWindowSize();
     void setGColor();
     void callDatesEventsFile(QList<QString>&, QString);
+    void unCommentEvents();
     QList<QString> qlEvents;
     QList<QString> qlDates;
     QList<QString> qlToday;

@@ -76,10 +76,13 @@ MainWindow::MainWindow(QWidget *parent) :
     if (gDays < 1 || gDays > 364) gDays = 14;
     if (gDelimiter.length() != 1) gDelimiter = "/";
     // Прочтены ли файлы
-    if (!pathMan.ok()) {
+    if (!pathMan.ok())
+    {
         QMessageBox::critical(0, tr("Ошибка"), pathMan.errString());
         return;
     }
+    //снимаем комменты с прошедших событий
+    unCommentEvents();
     //запоминаем наши даты и события
     setLstEvents();
     setLstDates();
@@ -204,7 +207,7 @@ QString MainWindow::getResultYesterdayStr(QList<QString> pql)
         QString sDate = fs.left(10);
         QDate dDate = QDate::fromString(sDate, "dd/MM/yyyy");
         if (dDate.day() == QDate::currentDate().addDays(-1).day() && dDate.month() == QDate::currentDate().addDays(-1).month())
-            sb += tr("Вчера") + fs.replace(sDate, "") + "\n";
+            sb += tr("Вчера") + fs.replace(sDate, "");// + "\n";
     }
     if (sb != "")
         return sb.left(sb.length() -1);
@@ -221,9 +224,12 @@ QString MainWindow::getResultTodayStr(QList<QString> pql)
         if (dDate.day() == QDate::currentDate().day() && dDate.month() == QDate::currentDate().month())
         {
             int iy = QDate::currentDate().year() - dDate.year();
-            QString st = tr("Сегодня ") + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина") + ")";
+            QString st = "";//tr("Сегодня ") + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина") + ")";
+            if (iy > 0)
+                st = tr("Сегодня ") + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина") + ")";
+            else
+                st = tr("Сегодня ") + fs.replace(sDate, "").trimmed();
             sb += st + "\n";
-            qlToday.append(st);
         }
     }
     if (sb != "")
@@ -241,19 +247,13 @@ QString MainWindow::getResultTomorrowStr(QList<QString> pql)
         if (dDate.day() == QDate::currentDate().addDays(1).day() && dDate.month() == QDate::currentDate().addDays(1).month())
         {
             int iy = QDate::currentDate().year() - dDate.year();
-            QString st = "";
-            if (iy > 0)
-            {
-                st = tr("Завтра ") + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина") + ")";
-                sb += st + "\n";
-            }
-            else
-            {
-                st = tr("Завтра ") + fs.replace(sDate, "");
-                sb += st + "\n";
-            }
+            QString st = "";//tr("Завтра ") + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина") + ")";
 
-            ql3.append(st);
+            if (iy > 0)
+                st = tr("Завтра ") + fs.replace(sDate, "").trimmed() + " (" + QString::number(iy) + tr(" годовщина") + ")";
+            else
+                st = tr("Завтра ") + fs.replace(sDate, "").trimmed();
+            sb += st + "\n";
         }
     }
 
@@ -320,10 +320,10 @@ QString MainWindow::getResultStr(QList<QString> pql, int pdays)
             {
                 if (sLocale == "en_US")
                 {
-                    st = tr("Через ") + QString::number(pdays) + tr(" дней (") + slDayMonth[1] + gDelimiter + slDayMonth[0] + ") " + fs.replace(sDate, "");
+                    st = tr("Через ") + QString::number(pdays) + tr(" дней (") + slDayMonth[1] + gDelimiter + slDayMonth[0] + ") " + fs.replace(sDate, "").trimmed();
                 }
                 else
-                    st = tr("Через ") + QString::number(pdays) + " " + getDaysStr(pdays) + " (" + sDate.left(5).replace("/", gDelimiter) + ") " + fs.replace(sDate, "");
+                    st = tr("Через ") + QString::number(pdays) + " " + getDaysStr(pdays) + " (" + sDate.left(5).replace("/", gDelimiter) + ") " + fs.replace(sDate, "").trimmed();
                 sb += st + "\n";
             }
             //заполняем список ql3
@@ -389,21 +389,8 @@ void MainWindow::refreshWindows()
     {
         QString resDates = getResultStr(qlDates, i);
         if (resDates.isEmpty()) continue;
-        /*
-        QTextCharFormat fmt = ui->plainTEditDates->currentCharFormat();
-        if (i%2 == 0)
-            fmt.setForeground(QBrush(Qt::red));
-        else
-            fmt.setForeground(QBrush(Qt::blue));
-        ui->plainTEditDates->setCurrentCharFormat(fmt);
-        ui->plainTEditDates->appendPlainText(getResultStr(qlDates, i));
 
-        fmt = ui->plainTEditDates->currentCharFormat();
-        fmt.clearForeground();
-        ui->plainTEditDates->setCurrentCharFormat(fmt);
-        */
-
-        if (resDates.left(5) == tr("Сегод"))
+        if (i == 0)
         {
             resDates = resDates.replace("\n", "</font></div><div><font color=\"" + gsColorTodayText + "\">");
             ui->plainTEditDates->appendHtml("<div><font color=\"" + gsColorTodayText + "\">" + resDates + "</font></div>");
@@ -419,7 +406,7 @@ void MainWindow::refreshWindows()
         QString resEvents = getResultStr(qlEvents, i);
         if (resEvents.isEmpty()) continue;
 
-        if (resEvents.left(5) == tr("Сегод"))
+        if (i == 0)
         {
             resEvents = resEvents.replace("\n", "</font></div><div><font color=\"" + gsColorTodayText + "\">");
             ui->plainTEditEvents->appendHtml("<div><font color=\"" + gsColorTodayText + "\">" + resEvents + "</font></div>");
@@ -606,7 +593,7 @@ void MainWindow::showContextMenuEvents(const QPoint& pos)
     connect(selectAllAction, &QAction::triggered, this, &MainWindow::showContextMenuEventsSelectAll);
     connect(editAction, &QAction::triggered, this, &MainWindow::editContextMenuEvents);
 
-    QAction* selectedItem = myMenu.exec(globalPos);
+    myMenu.exec(globalPos);
 }
 //Показываем кастомное контекстное меню для дат
 void MainWindow::showContextMenuDates(const QPoint& pos)
@@ -626,7 +613,7 @@ void MainWindow::showContextMenuDates(const QPoint& pos)
     connect(selectAllAction, &QAction::triggered, this, &MainWindow::showContextMenuDatesSelectAll);
     connect(editAction, &QAction::triggered, this, &MainWindow::editContextMenuDates);
 
-    QAction* selectedItem = myMenu.exec(globalPos);
+    myMenu.exec(globalPos);
 }
 //Обрабатываем редактирование событий
 void MainWindow::editContextMenuEvents()
@@ -676,5 +663,76 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
         break;
     default:
         break;
+    }
+}
+//снимаем комментарии с прошедших событий
+void MainWindow::unCommentEvents()
+{
+    QRegExp regexp("^;[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9]");
+
+    QList<QString> qlEvents, qlStneve;
+
+    bool commentExist = false;
+
+    QFile fl(pathMan.eventsFilePath());
+
+    if (fl.open(QIODevice::ReadOnly))
+    {
+        QTextCodec *codec = QTextCodec::codecForName("CP1251");
+        while(!fl.atEnd())
+        {
+            QByteArray sBStr = fl.readLine();
+            QString sStr = codec->toUnicode(sBStr);
+
+            qlEvents << sStr;
+        }
+        fl.close();
+    }
+    //определяем, есть ли вообще комментарий нужного нам характера
+    foreach(QString fs, qlEvents)
+    {
+        if (fs.contains(regexp))
+        {
+            commentExist = true;
+            break;
+        }
+    }
+    //если комментарий такой есть
+    if (!commentExist) return;
+
+    foreach(QString fs, qlEvents)
+    {
+            if (!fs.contains(regexp))
+            {
+                qlStneve << fs;
+                continue;
+            }
+            bool isWritten = false;
+        //смотрим в прошлое на 31 день
+            for(int pdays = -31; pdays < 0; pdays++)
+            {
+                QString sDate = fs.left(11);
+                sDate = sDate.right(sDate.length()-1);//убираем ведущую ;
+                QDate dDate = QDate::fromString(sDate, "dd/MM/yyyy");
+                if (dDate.day() == QDate::currentDate().addDays(pdays).day() && dDate.month() == QDate::currentDate().addDays(pdays).month())
+                {
+                    qlStneve << fs.right(fs.length()-1);//убираем ведущую ;
+                    isWritten = true;
+                    break;
+                }
+            }
+            if (!isWritten)
+                qlStneve << fs;
+    }//foreach(QString fs,
+
+    if(fl.open(QIODevice::WriteOnly))
+    {
+        foreach(QString sStneve, qlStneve)
+        {
+            QTextStream fileStream(&fl);
+            fileStream.setCodec("CP1251");
+            fileStream << sStneve;
+        }
+        fl.close();
     }
 }

@@ -1,3 +1,10 @@
+Version 0.0.8
+
+Some Bugfixies.
+Improvement:
+Implemented the ability not to remind events until the next year. To do this, call the context menu with the right mouse button, select "Edit ...", then comment out the desired date by putting ";" in front of her.
+As soon as the date becomes outdated, the comment will be automatically cancelled. To create a permanent comment, simply use another character, such as "#".
+
 Version 0.0.7
 
 Bugfixies: multiple events on the same date were displayed incorrectly 
