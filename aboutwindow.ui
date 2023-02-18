@@ -68,7 +68,7 @@
            <item>
             <widget class="QLabel" name="lbVer">
              <property name="text">
-              <string notr="true">v 0.0.8</string>
+              <string notr="true">v 0.0.9</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -91,7 +91,7 @@
            <item>
             <widget class="QLabel" name="lbYear_2">
              <property name="text">
-              <string notr="true">2020 - 2022</string>
+              <string notr="true">2020 - 2023</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>

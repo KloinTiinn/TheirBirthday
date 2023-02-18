@@ -75,6 +75,7 @@ private:
     QString getResultYesterdayStr(QList<QString>);
     QString getResultTomorrowStr(QList<QString>);
     QString getResult3Str(QList<QString>);
+    int getDayOfWeekOfMonth(int pCurDay = 0);
     void findTodayStrs(QPlainTextEdit *);
     void setWindowFont();
     void setWindowSize();
